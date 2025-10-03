@@ -66,7 +66,7 @@ async function runTask() {
         console.log("Iniciando o navegador...");
 
         // 1. Abre o Google e faz login
-        await driver.get('https://manager.icommarketing.com.br/#!/auth');
+        await driver.get(process.env.managerUrl);
         await driver.sleep(2500); // Aguarda o carregamento inicial
 
         // 2. Localiza e preenche os campos de login
