@@ -49,9 +49,9 @@ async function runTask() {
         console.log("Não foi possível obter a nova versão. Encerrando o script.");
         return;
     }
+    console.log("Versão:", newVersion);
 
     const urls = process.env.servers.split(',').map(u => u.trim());
-    console.log("URLs a serem processadas:", urls);
 
     let options = new chrome.Options();
     // options.addArguments('--headless=new');
@@ -125,10 +125,12 @@ async function runTask() {
 
             await driver.sleep(500); // Pausa para visualizar a mudança
 
-            driver.executeScript(`
+            await driver.executeScript(`
                 const elDeploy = document.querySelector('button[ng-click="deployStack()"]');
                 elDeploy.scrollIntoView({ behavior: 'smooth', block: 'center' });
             `)
+            await driver.sleep(1000); // Pausa para visualizar a mudança
+            await driver.findElement(By.xpath(`//por-switch-field[@name="prune"]//div//label[contains(@class, 'SwitchField-Switch-module__root')]`)).click();
             await driver.sleep(1000); // Pausa para visualizar a mudança
             await driver.findElement(By.xpath(`//button[@ng-click="deployStack()"]`)).click();
             await driver.sleep(1000); // Pausa para visualizar a mudança
